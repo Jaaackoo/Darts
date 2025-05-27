@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Player } from '../class/Player';
 import { PlayerCard } from '../components/PlayerCard';
 import { Grid } from '../components/Grid';
+import { PlayerDisplay } from '../components/PlayerDisplay';
 
 export function Game() {
 
@@ -55,7 +56,8 @@ export function Game() {
 
                 </Stack>
             ) : (
-                <Stack justifyContent="flex-end">
+                <Stack justifyContent="flex-end" height={800}>
+                    <PlayerDisplay currentIndex={currentPlayer} players={players} />
                     <Grid />
                 </Stack >
             )}
