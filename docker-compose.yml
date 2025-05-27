@@ -5,31 +5,38 @@ services:
     build: ./frontend
     ports:
       - "3000:3000"
-    depends_on:
-      - backend
-
-  backend:
-    build: ./backend
-    ports:
-      - "5000:5000"
-    environment:
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASS=pass
-      - DB_NAME=mydb
-    depends_on:
-      - db
-
-  db:
-    image: mysql:8.0
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: pass
-      MYSQL_DATABASE: mydb
-    ports:
-      - "3306:3306"
     volumes:
-      - db-data:/var/lib/mysql
+      - ./frontend:/app
+      - /app/node_modules  # Avoid host-node_modules conflicts
+    environment:
+      - CHOKIDAR_USEPOLLING=true
 
-volumes:
-  db-data:
+
+  # backend:
+  #   build: ./backend
+  #   ports:
+  #     - "5000:5000"
+  #   volumes:
+  #     - ./backend:/app
+  #     - /app/node_modules
+  #   environment:
+  #     - DB_HOST=db
+  #     - DB_USER=root
+  #     - DB_PASS=pass
+  #     - DB_NAME=mydb
+  #   depends_on:
+      # - db
+
+  # db:
+  #   image: mysql:8.0
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: pass
+  #     MYSQL_DATABASE: mydb
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - db-data:/var/lib/mysql
+
+# volumes:
+#   db-data:

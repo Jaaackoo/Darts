@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
   "devDependencies": {
     "@types/express": "^5.0.2",
     "@types/node": "^22.15.21",
