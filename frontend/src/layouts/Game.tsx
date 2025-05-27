@@ -27,6 +27,9 @@ export function Game() {
             }
             setPlayers(p);
         }
+        document.title = "CNF";
+
+
     }, []);
 
     function callbackPlayerCard(nom: string) {

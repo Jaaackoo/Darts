@@ -86,6 +86,7 @@ function App() {
 
 
 
+
 	useEffect(() => {
 		const newPlayers = [...players];
 
