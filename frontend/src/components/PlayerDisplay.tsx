@@ -10,8 +10,8 @@ interface PlayerDisplayProps {
 }
 export function PlayerDisplay({ players, currentIndex }: Readonly<PlayerDisplayProps>) {
 
-    
 
+    
     return (
         <Stack>
 
