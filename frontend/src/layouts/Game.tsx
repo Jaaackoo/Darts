@@ -56,7 +56,7 @@ export function Game() {
 
                 </Stack>
             ) : (
-                <Stack justifyContent="flex-end" height={800}>
+                <Stack justifyContent="flex-end" height={800} rowGap={10}>
                     <PlayerDisplay currentIndex={currentPlayer} players={players} />
                     <Grid />
                 </Stack >
