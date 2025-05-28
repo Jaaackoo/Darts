@@ -65,4 +65,9 @@ export class Player {
         this.score = score;
     }
 
+
+    public reset() {
+        this.darts = [];
+        this.score = 0;
+    }
 }

@@ -4,17 +4,19 @@ import { Player } from '../class/Player';
 import { DartIcon } from './DartIcon';
 import { useLocation } from 'react-router-dom';
 import { DeleteForeverRounded } from '@mui/icons-material';
+import { CanFinish } from './CanFinish';
 
 interface PlayerDisplayProps {
     players: Player[];
     currentIndex: number;
     callbackValid?: () => void;
     callbackEmpty?: () => void;
+    callbackPrevPlayer?: () => void;
     tempDarts: number[];
 }
 
 
-export function PlayerDisplay({ players, currentIndex, callbackValid, callbackEmpty, tempDarts }: Readonly<PlayerDisplayProps>) {
+export function PlayerDisplay({ players, currentIndex, callbackValid, callbackEmpty, callbackPrevPlayer, tempDarts }: Readonly<PlayerDisplayProps>) {
 
     const location = useLocation();
 
@@ -57,13 +59,16 @@ export function PlayerDisplay({ players, currentIndex, callbackValid, callbackEm
                     <Typography variant='h5'>{tempDarts?.[2] ?? ''}</Typography>
                 </Stack>
                 <Stack direction="row" spacing={2} alignItems="center">
-
+                    <Button variant='text' sx={{ width: "fit-content", textTransform: "none" }} onClick={callbackPrevPlayer}>Précédent</Button>
                     <Button variant='outlined' sx={{ textTransform: "none" }} onClick={callbackEmpty} color='error' startIcon={<DeleteForeverRounded />}>Vider</Button>
                     <Button variant='outlined' sx={{ textTransform: "none" }} onClick={callbackValid}>Valider</Button>
 
                 </Stack>
             </Stack>
-
+            <CanFinish 
+                score={location.state.nbPoints - players[currentIndex].getScore() - tempDarts.reduce((accumulator, currentVal) => accumulator + currentVal, 0)}
+                finisher={players[currentIndex].getNom()}
+                />
             <Stack justifySelf="flex-end" alignSelf="flex-end">
                 <Stack direction="column" rowGap={5}>
                     {players.map((player, index) => {

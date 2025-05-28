@@ -17,6 +17,7 @@ export function Game() {
     const [startingPlayer, setStartingPlayer] = useState<number>(0);
     const [isFirstRound, setIsFirstRound] = useState(true);
     const [tempDarts, setTempDarts] = useState<number[]>([]);
+    const [winner, setWinner] = useState<Player | null>(null);
 
     useEffect(() => {
         if (location?.state?.players == null || location?.state?.nbPoints == null || location?.state?.nbManche == null) {
@@ -47,15 +48,46 @@ export function Game() {
         if (tempDarts.length < 3) {
             const newTemp = [...tempDarts, value];
             setTempDarts(newTemp);
-            
-            
-            if (newTemp.length === 3) {
-                nextPlayer(newTemp);
+
+            let total = newTemp.reduce((acc, curr) => acc + curr, 0);
+
+            let currScore = location.state.nbPoints - (players[currentPlayer].getScore() + total)
+            if (currScore === 0) {
+                winRound();
+            } else if (currScore < 0) {
+                nextPlayer([]);
+            } else {
+                if (newTemp.length === 3) {
+                    nextPlayer(newTemp);
+                }
             }
+
+
         }
 
     }
 
+    function winRound() {
+        const updatedPlayers = _.cloneDeep(players);
+
+        updatedPlayers[currentPlayer].setMancheGagne(updatedPlayers[currentPlayer].getMancheGagne() + 1);
+        setTempDarts([]);
+        if (updatedPlayers[currentPlayer].getMancheGagne() == location.state.nbManche) {
+            setPlayers(updatedPlayers);
+            setWinner(updatedPlayers[currentPlayer]);
+        } else {
+            for (const player of updatedPlayers) {
+                player.reset();
+            }
+            setRound(1);
+            let startingP = startingPlayer === players.length - 1 ? 0 : startingPlayer + 1
+            setStartingPlayer(startingP);
+            setCurrentPlayer(startingP);
+
+        }
+        setPlayers(updatedPlayers);
+
+    }
 
     function nextPlayer(darts?: number[]) {
 
@@ -71,12 +103,7 @@ export function Game() {
         if (nextPlayerIndex === startingPlayer) {
             setRound((prevState) => prevState + 1);
         }
-
-
-
         setTempDarts([]);
-
-
     }
 
     function prevPlayer() {
@@ -126,10 +153,14 @@ export function Game() {
     }
 
 
+    function replay() {
+        navigate('/');
+    }
+
     return (
 
         <Stack padding={10} alignItems="center" rowGap={10}>
-            {isFirstRound ? (
+            {winner !== null ? isFirstRound ? (
                 <Stack alignItems="center" rowGap={2}>
                     <Typography variant='h4'>
                         Lancer votre première fléchette, le plus près commence !
@@ -145,19 +176,28 @@ export function Game() {
 
                 </Stack>
             ) : (
-                <Stack justifyContent="flex-end" height={800} rowGap={5}>
+                <Stack justifyContent="flex-end" height={800} rowGap={10}>
                     <PlayerDisplay
                         currentIndex={currentPlayer}
                         players={players}
                         callbackValid={() => nextPlayer(tempDarts)}
                         callbackEmpty={empty}
-
+                        callbackPrevPlayer={prevPlayer}
                         tempDarts={tempDarts}
                     />
-                    <Button variant='outlined' sx={{ width: "fit-content", textTransform: "none" }} onClick={prevPlayer}>Retour</Button>
                     <Grid callback={handleGrid} />
                 </Stack >
+            ) : (
+                <Stack spacing={10} mt={10}>
+                    <Typography variant='h4'>
+                        {/* {`Bravo à ${winner!.getNom()}`} */}
+                        {`Bravo à Jacko`}
+
+                    </Typography>
+                    <Button onClick={replay} variant='contained'>Rejouer</Button>
+                </Stack>
             )}
+
         </Stack>
 
     );
