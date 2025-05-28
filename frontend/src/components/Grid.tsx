@@ -4,9 +4,13 @@ import React from "react";
 
 const numbers = Array.from({ length: 20 }, (_, i) => i + 1);
 
-export function Grid() {
+interface GridProps {
+	callback: (num: number) => void;
+}
+
+export function Grid({ callback }: Readonly<GridProps>) {
 	function handleClick(value: number) {
-		console.log("Clicked value:", value);
+		callback(value);
 	}
 
 	return (

@@ -7,16 +7,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    # volumes:
-    #   - ./frontend:/app
-    #   - /app/node_modules  # Prevents node_modules conflicts between host & container
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules  # Prevents node_modules conflicts between host & container
     environment:
       - CHOKIDAR_USEPOLLING=true
     stdin_open: true      # For hot reload / interactive support
     tty: true
-    networks:
-      - swag_default
-  
-  networks: 
-    swag_default:
-      external: true

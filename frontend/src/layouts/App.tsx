@@ -84,9 +84,6 @@ function App() {
 	const [snackbarOpen, setSnackbarOpen] = useState(false);
 	const [snackbarMessage, setSnackbarMessage] = useState("");
 
-
-
-
 	useEffect(() => {
 		const newPlayers = [...players];
 
