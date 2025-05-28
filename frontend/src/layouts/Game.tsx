@@ -160,7 +160,7 @@ export function Game() {
     return (
 
         <Stack padding={10} alignItems="center" rowGap={10}>
-            {winner !== null ? isFirstRound ? (
+            {winner === null ? isFirstRound ? (
                 <Stack alignItems="center" rowGap={2}>
                     <Typography variant='h4'>
                         Lancer votre première fléchette, le plus près commence !
@@ -190,8 +190,8 @@ export function Game() {
             ) : (
                 <Stack spacing={10} mt={10}>
                     <Typography variant='h4'>
-                        {/* {`Bravo à ${winner!.getNom()}`} */}
-                        {`Bravo à Jacko`}
+                        {`Bravo à ${winner!.getNom()}`}
+                        
 
                     </Typography>
                     <Button onClick={replay} variant='contained'>Rejouer</Button>
